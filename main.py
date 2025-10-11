@@ -78,6 +78,23 @@ def version():
     return {"version": APP_VERSION}
 
 
+
+
+# ====== ユーザー一覧API（ai_news_pocから取得用） ======
+@app.get("/users")
+def users_all():
+    # {"<userId>": {"keywords": [...]}, ...} を返す
+    return load_users()
+
+@app.get("/users/{user_id}")
+def users_one(user_id: str):
+    data = load_users()
+    return data.get(user_id, {"keywords": []})
+
+
+
+
+
 # ====== Webhook本体 ======
 @app.post("/line/webhook")
 async def line_webhook(request: Request, x_line_signature: T.Optional[str] = Header(default=None)):
